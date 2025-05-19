@@ -14,7 +14,7 @@ const taskSchema = z.object({
 });
 
 //Insert a new task
-router.post('/insert', async (req: Request, res: Response): Promise<any> => {
+router.post('/', async (req: Request, res: Response): Promise<any> => {
   try {
     const { title, isDone, dueDate } = req.body;
 
@@ -34,7 +34,7 @@ router.post('/insert', async (req: Request, res: Response): Promise<any> => {
 });
 
 //Get all tasks
-router.get('/all', async (req: Request, res: Response): Promise<any> => {
+router.get('/', async (req: Request, res: Response): Promise<any> => {
   try {
     const result = await db.select().from(tasks);
     res.status(200).json(result);

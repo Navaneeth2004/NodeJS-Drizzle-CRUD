@@ -7,6 +7,28 @@ const swaggerDocument = {
     title: 'Task API',
     version: '1.0.0',
   },
+  components: {
+    parameters: {
+      TaskId: {
+        name: 'id',
+        in: 'path',
+        required: true,
+        schema: { type: 'integer' },
+        description: 'Task ID'
+      }
+    },
+    schemas: {
+      Task: {
+        type: 'object',
+        properties: {
+          title: { type: 'string' },
+          isDone: { type: 'boolean' },
+          dueDate: { type: 'string', format: 'date' }
+        },
+        required: ['title', 'dueDate']
+      }
+    }
+  },
   paths: {
     '/tasks': {
       get: { summary: 'Get all tasks', responses: { 200: { description: 'OK' } } },
@@ -16,15 +38,7 @@ const swaggerDocument = {
           required: true,
           content: {
             'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  title: { type: 'string' },
-                  isDone: { type: 'boolean' },
-                  dueDate: { type: 'string', format: 'date' }
-                },
-                required: ['title', 'dueDate']
-              }
+              schema: { $ref: '#/components/schemas/Task' }
             }
           }
         },
@@ -32,28 +46,29 @@ const swaggerDocument = {
       },
     },
     '/tasks/{id}': {
-      get: { summary: 'Get a task by ID', responses: { 200: { description: 'OK' } } },
+      get: {
+        summary: 'Get a task by ID',
+        parameters: [{ $ref: '#/components/parameters/TaskId' }],
+        responses: { 200: { description: 'OK' } }
+      },
       put: {
         summary: 'Update a task',
+        parameters: [{ $ref: '#/components/parameters/TaskId' }],
         requestBody: {
           required: true,
           content: {
             'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  title: { type: 'string' },
-                  isDone: { type: 'boolean' },
-                  dueDate: { type: 'string', format: 'date' }
-                },
-                required: ['title', 'dueDate']
-              }
+              schema: { $ref: '#/components/schemas/Task' }
             }
           }
         },
         responses: { 200: { description: 'Updated' } }
       },
-      delete: { summary: 'Delete a task', responses: { 200: { description: 'Deleted' } } },
+      delete: {
+        summary: 'Delete a task',
+        parameters: [{ $ref: '#/components/parameters/TaskId' }],
+        responses: { 200: { description: 'Deleted' } }
+      }
     }
   }
 };
