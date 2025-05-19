@@ -10,11 +10,49 @@ const swaggerDocument = {
   paths: {
     '/tasks': {
       get: { summary: 'Get all tasks', responses: { 200: { description: 'OK' } } },
-      post: { summary: 'Create a task', responses: { 200: { description: 'Created' } } },
+      post: {
+        summary: 'Create a task',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string' },
+                  isDone: { type: 'boolean' },
+                  dueDate: { type: 'string', format: 'date' }
+                },
+                required: ['title', 'dueDate']
+              }
+            }
+          }
+        },
+        responses: { 201: { description: 'Created' } }
+      },
     },
     '/tasks/{id}': {
       get: { summary: 'Get a task by ID', responses: { 200: { description: 'OK' } } },
-      put: { summary: 'Update a task', responses: { 200: { description: 'Updated' } } },
+      put: {
+        summary: 'Update a task',
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  title: { type: 'string' },
+                  isDone: { type: 'boolean' },
+                  dueDate: { type: 'string', format: 'date' }
+                },
+                required: ['title', 'dueDate']
+              }
+            }
+          }
+        },
+        responses: { 200: { description: 'Updated' } }
+      },
       delete: { summary: 'Delete a task', responses: { 200: { description: 'Deleted' } } },
     }
   }
